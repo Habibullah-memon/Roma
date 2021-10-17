@@ -36,7 +36,7 @@ namespace Roma
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanelFooter = new System.Windows.Forms.TableLayoutPanel();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.btnUpdate = new System.Windows.Forms.Button();
+            this.buttonUpdate = new System.Windows.Forms.Button();
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -96,6 +96,7 @@ namespace Roma
             this.label13 = new System.Windows.Forms.Label();
             this.Pro_Detail_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Product_ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Product_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Qty_Bonus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Purchase_Price = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -121,7 +122,7 @@ namespace Roma
             this.tableLayoutPanelFooter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanelFooter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanelFooter.Controls.Add(this.buttonSave, 0, 0);
-            this.tableLayoutPanelFooter.Controls.Add(this.btnUpdate, 1, 0);
+            this.tableLayoutPanelFooter.Controls.Add(this.buttonUpdate, 1, 0);
             this.tableLayoutPanelFooter.Controls.Add(this.buttonRefresh, 2, 0);
             this.tableLayoutPanelFooter.Controls.Add(this.buttonDelete, 3, 0);
             this.tableLayoutPanelFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -151,23 +152,23 @@ namespace Roma
             this.buttonSave.UseVisualStyleBackColor = false;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // btnUpdate
+            // buttonUpdate
             // 
-            this.btnUpdate.BackColor = System.Drawing.Color.DeepSkyBlue;
-            this.btnUpdate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnUpdate.FlatAppearance.BorderSize = 0;
-            this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUpdate.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdate.ForeColor = System.Drawing.Color.White;
-            this.btnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdate.Image")));
-            this.btnUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUpdate.Location = new System.Drawing.Point(324, 3);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(315, 38);
-            this.btnUpdate.TabIndex = 17;
-            this.btnUpdate.Text = "Update Invoice";
-            this.btnUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnUpdate.UseVisualStyleBackColor = false;
+            this.buttonUpdate.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.buttonUpdate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonUpdate.FlatAppearance.BorderSize = 0;
+            this.buttonUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonUpdate.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonUpdate.ForeColor = System.Drawing.Color.White;
+            this.buttonUpdate.Image = ((System.Drawing.Image)(resources.GetObject("buttonUpdate.Image")));
+            this.buttonUpdate.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonUpdate.Location = new System.Drawing.Point(324, 3);
+            this.buttonUpdate.Name = "buttonUpdate";
+            this.buttonUpdate.Size = new System.Drawing.Size(315, 38);
+            this.buttonUpdate.TabIndex = 17;
+            this.buttonUpdate.Text = "Update Invoice";
+            this.buttonUpdate.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.buttonUpdate.UseVisualStyleBackColor = false;
             // 
             // buttonRefresh
             // 
@@ -719,6 +720,7 @@ namespace Roma
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Pro_Detail_ID,
             this.Product_ID,
+            this.Product_Name,
             this.Qty,
             this.Qty_Bonus,
             this.Purchase_Price,
@@ -756,6 +758,7 @@ namespace Roma
             this.dataGridView1.Size = new System.Drawing.Size(1276, 343);
             this.dataGridView1.TabIndex = 101;
             this.dataGridView1.TabStop = false;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // groupBox3
             // 
@@ -992,7 +995,12 @@ namespace Roma
             this.Product_ID.HeaderText = "Product ID";
             this.Product_ID.Name = "Product_ID";
             this.Product_ID.ReadOnly = true;
-            this.Product_ID.Visible = false;
+            // 
+            // Product_Name
+            // 
+            this.Product_Name.HeaderText = "Product Name";
+            this.Product_Name.Name = "Product_Name";
+            this.Product_Name.ReadOnly = true;
             // 
             // Qty
             // 
@@ -1088,7 +1096,7 @@ namespace Roma
         #endregion
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanelFooter;
         private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Button buttonUpdate;
         private System.Windows.Forms.Button buttonRefresh;
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Label label3;
@@ -1148,6 +1156,7 @@ namespace Roma
         private System.Windows.Forms.Label labelBarcode;
         private System.Windows.Forms.DataGridViewTextBoxColumn Pro_Detail_ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Product_ID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Product_Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn Qty;
         private System.Windows.Forms.DataGridViewTextBoxColumn Qty_Bonus;
         private System.Windows.Forms.DataGridViewTextBoxColumn Purchase_Price;

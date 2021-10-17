@@ -166,8 +166,12 @@ namespace Roma
             string _querry;
             if (Classes.DB.sql_con.State == ConnectionState.Open){ Classes.DB.sql_con.Close(); }
             if (_search == "")
-            {// additionalquerry = "SELECT * FROM Products"; 
-                _querry = "SELECT * from Product_Detail";
+            { 
+             // _querry = "SELECT * from Product_Detail";
+                _querry = "SELECT PD.[Pro_Detail_ID], PD.[Product_ID],P.Product_Name AS PName," +
+                    "PD.[Qty] ,PD.[QtyBonus],PD.[PurchasePrice],PD.[SoldPrice],PD.[Disc],PD.[Tax],PD.[ExpiryDate],PD.[Total_Amount]" +
+                    " FROM Product_Detail as PD" +
+                    " inner join Products as P ON PD.[Product_ID] = P.[Id]";
             }
             else
             {
@@ -179,9 +183,10 @@ namespace Roma
             SqlDataAdapter sda1 = new SqlDataAdapter(cmd1);
             DataTable dt = new DataTable();
             sda1.Fill(dt);
+            dataGridView1.Rows.Clear();
             foreach (DataRow row in dt.Rows)
             {               
-                dataGridView1.Rows.Add(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7], row[8],row[9]);
+                dataGridView1.Rows.Add(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7], row[8],row[9], row[10]);
                 
             }//
 
@@ -368,6 +373,46 @@ namespace Roma
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex != -1 && e.ColumnIndex != -1 && e.ColumnIndex == 11)
+            {
+                
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                string deletingproductid = row.Cells[1].Value.ToString();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("Delete from Product_Detail WHERE Product_ID = '" + deletingproductid + "' ", Classes.DB.sql_con);
+                    Classes.DB.sql_con.Open();
+                    cmd.ExecuteNonQuery();
+                    Classes.DB.sql_con.Close();
+                    _Refresh();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Classes.DB.sql_con.Close();
+                }
+                //textBoxID.Text = row.Cells[0].Value.ToString();
+                //textBoxBarcode.Text = row.Cells[1].Value.ToString();
+                //textBoxProductName.Text = row.Cells[2].Value.ToString();
+                //comboBoxCompany.Text = row.Cells[3].Value.ToString();
+                //comboBoxGroup.Text = row.Cells[4].Value.ToString();
+                //comboBoxPacking.Text = row.Cells[5].Value.ToString();
+                //textBoxPurPrice.Text = row.Cells[6].Value.ToString();
+                //textBoxSalePrice.Text = row.Cells[7].Value.ToString();
+                //textBoxDiscount.Text = row.Cells[8].Value.ToString();
+                //textBoxTax.Text = row.Cells[9].Value.ToString();
+                //textBoxReOrderQty.Text = row.Cells[10].Value.ToString();
+                ////dateTimePickerExpiry.Value = Convert.ToDateTime( row.Cells[9].Value);
+                //comboBoxActiveState.Text = row.Cells[12].Value.ToString();
+
+                buttonSave.Enabled = false; buttonSave.BackColor = Color.Gray;
+                buttonDelete.Enabled = true; buttonDelete.BackColor = Color.Red;
+                buttonUpdate.Enabled = true; buttonUpdate.BackColor = Color.DeepSkyBlue;
             }
         }
     }
