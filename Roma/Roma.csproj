@@ -97,12 +97,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="hh\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="hh\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -331,13 +325,6 @@
     <None Include="Resources\login-icon.png" />
     <None Include="Img\background-blur-1-1024x683.jpg" />
     <None Include="Img\close.png" />
-    <Content Include="Database\mmedical.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Database\mmedical_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>mmedical.mdf</DependentUpon>
-    </Content>
     <Content Include="Img\shut-down.png" />
     <None Include="Img\software hack.jpg" />
   </ItemGroup>

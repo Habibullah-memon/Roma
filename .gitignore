@@ -356,3 +356,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Roma/Database/mmedical_log.ldf
+/Roma/Database/mmedical.mdf
