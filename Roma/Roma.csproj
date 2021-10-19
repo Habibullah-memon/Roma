@@ -313,5 +313,8 @@
     <Content Include="Img\shut-down.png" />
     <None Include="Img\software hack.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Database\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
