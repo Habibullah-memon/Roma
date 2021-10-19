@@ -23,6 +23,7 @@ namespace Roma
             generateID(); RetriveComboBoxDataSupplierName();
             RetriveComboBoxData(comboBoxProductName, "Products", "Product_Name", "Id");
             //RetriveComboBoxData(comboBoxBarCode, "Products", "BarCode", "Product_Name");
+            _Refresh();
         }
 
         public void RetriveComboBoxDataSupplierName()
@@ -126,7 +127,15 @@ namespace Roma
                 MessageBox.Show("Input Data is not in a correct format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            try
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {// if product already exist
+                if (comboBoxProductName.Text == row.Cells[2].Value.ToString())
+                {
+                    
+                }                
+            }
+                      
+            try // if nothing found
             {
                 SqlCommand cmd = new SqlCommand("insert into Product_Detail values (@ProDetail_ID,@Product_ID,@Qty,@Qty_Bonus,@Pur_Price,@Sale_Price,@Discount,@Tax,@Expiry_Date,@Total_Amt)", Classes.DB.sql_con);
 
@@ -414,6 +423,11 @@ namespace Roma
                 buttonDelete.Enabled = true; buttonDelete.BackColor = Color.Red;
                 buttonUpdate.Enabled = true; buttonUpdate.BackColor = Color.DeepSkyBlue;
             }
+        }
+
+        private void buttonNEW_Click(object sender, EventArgs e)
+        {
+            generateID();
         }
     }
 }
