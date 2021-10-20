@@ -46,8 +46,9 @@ namespace Roma
             SqlDataAdapter sda2 = new SqlDataAdapter(cmd2); DataTable dt = new DataTable(); sda2.Fill(dt);
             Classes.DB.sql_con.Open(); cmd2.ExecuteNonQuery(); Classes.DB.sql_con.Close();
 
-            comboBox.DataSource = dt; comboBox.DisplayMember = displayMemberColumn;
-            comboBox.ValueMember = ValueMemberColumn;
+            comboBox.DataSource = dt;
+            comboBox.DisplayMember = displayMemberColumn;   // product name
+            comboBox.ValueMember = ValueMemberColumn;       // product id
         }
         private void buttonExit_Click(object sender, EventArgs e)
         {
@@ -120,27 +121,46 @@ namespace Roma
             comboBoxSupplierName.Focus();
         }
 
+        bool _isupdatedqty;
         private void buttonAddToCart_Click(object sender, EventArgs e)
         {
+            _isupdatedqty = false;
             if (textBoxTotalAmt.Text == "")
             {
                 MessageBox.Show("Input Data is not in a correct format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             foreach (DataGridViewRow row in dataGridView1.Rows)
-            {// if product already exist
-                if (comboBoxProductName.Text == row.Cells[2].Value.ToString())
+            {// if product already exist according to |Product Name
+                if (labelProductID.Text == row.Cells[1].Value.ToString() && textBoxPurPrice.Text == row.Cells[5].Value.ToString() && textBoxSalePrice.Text == row.Cells[6].Value.ToString())
                 {
-                    
-                }                
+                    SqlCommand cmd = new SqlCommand("update Product_Detail set Qty =@Qty, QtyBonus = @Qty_Bonus, PurchasePrice = @Pur_Price, SoldPrice = @Sale_Price, Disc = @Discount, Tax = @Tax, Total_Amount = @Total_Amt where Pro_Detail_ID = @ProDetail_ID and Product_ID = @Product_ID ", Classes.DB.sql_con);
+
+                    cmd.Parameters.AddWithValue("@ProDetail_ID", labelInvoiceID.Text);
+                    cmd.Parameters.AddWithValue("@Product_ID", labelProductID.Text);
+                    cmd.Parameters.AddWithValue("@Qty", Convert.ToInt32( textBoxQty.Text)+ Convert.ToInt32( row.Cells[3].Value));
+                    cmd.Parameters.AddWithValue("@Qty_Bonus", Convert.ToInt32(textBoxQtyBonus.Text) + Convert.ToInt32(row.Cells[4].Value) );
+                    cmd.Parameters.AddWithValue("@Pur_Price", textBoxPurPrice.Text);
+                    cmd.Parameters.AddWithValue("@Sale_Price", textBoxSalePrice.Text);
+                    cmd.Parameters.AddWithValue("@Discount", Convert.ToInt32(textBoxDiscount.Text) + Convert.ToInt32(row.Cells[7].Value) );
+                    cmd.Parameters.AddWithValue("@Tax", Convert.ToInt32(textBoxTax.Text) + Convert.ToInt32(row.Cells[8].Value));
+                    cmd.Parameters.AddWithValue("@Total_Amt", Convert.ToInt32(textBoxTotalAmt.Text) + Convert.ToInt32(row.Cells[10].Value) );
+
+                    Classes.DB.sql_con.Open(); cmd.ExecuteNonQuery(); Classes.DB.sql_con.Close();
+
+                    _Refresh();
+                    _isupdatedqty = true;
+                }
+                
             }
-                      
-            try // if nothing found
+            if (_isupdatedqty != true)// if nothing found
+            {
+            try 
             {
                 SqlCommand cmd = new SqlCommand("insert into Product_Detail values (@ProDetail_ID,@Product_ID,@Qty,@Qty_Bonus,@Pur_Price,@Sale_Price,@Discount,@Tax,@Expiry_Date,@Total_Amt)", Classes.DB.sql_con);
 
                 cmd.Parameters.AddWithValue("@ProDetail_ID", labelInvoiceID.Text);
-                cmd.Parameters.AddWithValue("@Product_ID", comboBoxProductName.SelectedValue.ToString());
+                cmd.Parameters.AddWithValue("@Product_ID", labelProductID.Text);
                 cmd.Parameters.AddWithValue("@Qty", textBoxQty.Text);
                 cmd.Parameters.AddWithValue("@Qty_Bonus", textBoxQtyBonus.Text);
                 cmd.Parameters.AddWithValue("@Pur_Price", textBoxPurPrice.Text);
@@ -150,17 +170,22 @@ namespace Roma
                 cmd.Parameters.AddWithValue("@Expiry_Date", DateTime.Now);
                 cmd.Parameters.AddWithValue("@Total_Amt", textBoxTotalAmt.Text);
 
-                Classes.DB.sql_con.Open();cmd.ExecuteNonQuery();Classes.DB.sql_con.Close();
+                Classes.DB.sql_con.Open(); cmd.ExecuteNonQuery(); Classes.DB.sql_con.Close();
 
                 //MessageBox.Show("Record successfully saved!", "Sucess!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 _Refresh(); comboBoxProductName.Focus();
+                    
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Classes.DB.sql_con.Close();
-                
+
             }
+
+            }
+
+
             comboBoxProductName.Focus();
             //issearching = 'y';
         }
@@ -218,6 +243,7 @@ namespace Roma
                         while (sqlDataReader.Read())
                         {
                             labelBarcode.Text = sqlDataReader.GetString(1);
+                            labelProductID.Text = sqlDataReader.GetString(0);
                             textBoxPurPrice.Text = sqlDataReader.GetInt32(8).ToString();
                             textBoxSalePrice.Text = sqlDataReader.GetInt32(9).ToString();
                             textBoxDiscount.Text = sqlDataReader.GetInt32(10).ToString();
@@ -252,7 +278,9 @@ namespace Roma
                     {
                         while (sqlDataReader.Read())
                         {
+                            comboBoxProductName.Text = sqlDataReader.GetString(2);
                             labelBarcode.Text = sqlDataReader.GetString(1);
+                            labelProductID.Text = sqlDataReader.GetString(0);
                             textBoxPurPrice.Text = sqlDataReader.GetInt32(8).ToString();
                             textBoxSalePrice.Text = sqlDataReader.GetInt32(9).ToString();
                             textBoxDiscount.Text = sqlDataReader.GetInt32(10).ToString();
